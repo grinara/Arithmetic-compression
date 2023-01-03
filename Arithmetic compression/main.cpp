@@ -6,44 +6,46 @@
 #include <string>
 using namespace std;
 
-struct govno {
+struct num {
 	char c=0;
-	float count=0;
-	float left=0;
-	float right=0;
+	int count=0;
+	int left=0;
+	int right=0;
 };
 void main() {
-	string s1 = "dbabbabc";
+	string s1 = "bukr";
 	map <char, int> m;
 	for (int i = 0; i < s1.size(); i++) {
 		m[s1[i]]++;
 	}
-	govno ls1[255];
+	num ls1[255];
 	map<char, int>::iterator i;
 	float rayn=0;
 	for (i = m.begin(); i != m.end(); ++i) {
 		ls1[i->first].c = i->first;
 		ls1[i->first].count = i->second;
 		ls1[i->first].left = rayn;
-		rayn = ls1[i->first].left + (ls1[i->first].count / s1.size());
+		rayn = ls1[i->first].left + ls1[i->first].count;
 		ls1[i->first].right = rayn;
+		//cout << i->first<<" " << ls1[i->first].left << "----" << ls1[i->first].right << endl;
 	}
-	float l = 0, h = 1;
+	int l = 0, h = pow(2,16)-1, del = s1.size();
 	for (int i = 0; i < s1.size(); i++) {
 		char c = s1[i];
-		float l1 = l;
-		l = l + ls1[c].left * (h - l);
-		h = l1 + ls1[c].right * (h - l1);
+		int l1 = l;
+		l = l + ls1[c].left * ((h - l1 + 1) / del);
+		h = l1 + ls1[c].right * (((h - l1+1)/del)-1);
+		cout<< s1[i]<<" " << l << " ------ " << h << endl;
 	}
-	cout << l << " ------ " << h<<endl;
-	float test = 0.91273;
-	l = 0, h = 1;
+//	cout << l << " ------ " << h<<endl;
+	int test = 13822;
+	l = 0, h = pow(2, 16) - 1;
 	for (int i = 0; i < s1.size(); i++) {
 		for (int j = 0; j < m.size(); j++) {
 			char c = s1[i];
-			float l1 = l;
-			l = l + ls1[c].left * (h - l);
-			h = l1 + ls1[c].right * (h - l1);
+			int l1 = l;
+			l = l + ls1[c].left * ((h - l + 1) / del);
+			h = l1 + ls1[c].right * ((h - l1 + 1) / del - 1);
 			if ((l <= test) && (test < h)) { cout << c; break; }
 		}
 	}
