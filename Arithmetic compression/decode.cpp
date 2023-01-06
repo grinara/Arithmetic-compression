@@ -58,7 +58,7 @@ void decode() {
 	}
 	double l = 0, h = pow(2, 16) - 1;
 	double First = (h + 1) / 4, Half = First * 2, Third = First * 3;
-	double freq = 0;
+	long double freq = 0;
 	double del = filesize;
 	double value = test;
 	for (int i = 0; i < filesize; i++) {

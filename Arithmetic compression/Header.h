@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 #pragma once
-void main();
+void code();
 void decode();
 struct num {
 	char c = 0;
