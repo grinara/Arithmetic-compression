@@ -1,21 +1,23 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 #include <map>
 #include <list>
 #include <fstream>
 #include <string>
 #include "Header.h"
+
 using namespace std;
 int bits = 0;
 list<int> dayn;
-void BitsPlusFollow(int bit, ofstream *f) {
+void BitsPlusFollow(int bit) {
 	dayn.push_back(bit);
-
+	cout << bit;
 	for (; bits > 0; bits--)
 	{
+		cout << !bit;
 		dayn.push_back(!bit);
 	}
-	
+
 }
 void code() {
 	setlocale(LC_ALL, "Russian");
@@ -33,9 +35,9 @@ void code() {
 	int filesize = file1.tellg();
 	file1.clear();
 	file1.seekg(0);
-	while (!file1.eof()) { //èù¸ì êîëè÷åñòâî âõîæäåíèé êàæäîãî ñèìâîëà
+	while (!file1.eof()) { 
 		char c = file1.get();
-		if(c!=-1){ m[c]++; }
+		if (c != -1) { m[c]++; }
 	}
 	int msize = m.size();
 	num ls1[255];
@@ -48,24 +50,24 @@ void code() {
 		rayn = ls1[i->first].left + ls1[i->first].count;
 		ls1[i->first].right = rayn;
 	}
-	
+
 	double l = 0, h = pow(2, 16) - 1, del = filesize;
 	double First = (h + 1) / 4, Half = First * 2, Third = First * 3;
 	file1.clear();
 	file1.seekg(0);
 	while (!file1.eof()) {
 		char c = file1.get();
-		if(c==-1){}
+		if (c == -1) {}
 		else {
 			double l1 = l;
 			l = l + ls1[c].left * ((h - l1 + 1) / del);
-			h = l1 + ls1[c].right * (((h - l1 + 1) / del) - 1);
+			h = l1 + (ls1[c].right * ((h - l1 + 1) / del)) - 1;
 			while (true) {
 				if (h < Half) {
-					BitsPlusFollow(0, &filecode);
+					BitsPlusFollow(0);
 				}
 				else if (l >= Half) {
-					BitsPlusFollow(1, &filecode);
+					BitsPlusFollow(1);
 					l -= Half; h -= Half;
 
 				}
@@ -89,7 +91,7 @@ void code() {
 	while (dayn.size() < 15) {
 		dayn.push_back(0);
 	}
-	while (dayn.size() % 8!=0) {
+	while (dayn.size() % 8 != 0) {
 		dayn.push_back(0);
 	}
 	filecode.write((char*)&filesize, sizeof(int)); //длина файла
@@ -107,7 +109,7 @@ void code() {
 		dayn.pop_front();
 		if (count == 0) { filecode.write((char*)&number, sizeof(int)); count = 8; number = 0; }
 		count--;
-		
+
 	}
 	file1.close();
 	filecode.close();
