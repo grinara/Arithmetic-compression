@@ -7,10 +7,13 @@
 #include "Header.h"
 using namespace std;
 void decode() {
+	string file_name_to_decode;
+	cout << "Введите имя декадируемого файла: ";
+	cin >> file_name_to_decode;
 	ifstream filecod;
-	filecod.open("112.txt", ios::out | ios::binary);
-	if (filecod.is_open()) { cout << "Yes"<<endl; }
-	else cout << "No";
+	filecod.open(file_name_to_decode.c_str(), ios::out | ios::binary);
+	if (filecod) { cout << "Файл успешно открыт" << endl; }
+	else { cout << "Файл не открыт" << endl; return; }
 	int filesize;
 	int msize;
 	map<char, int> m;
@@ -19,7 +22,7 @@ void decode() {
 	list<int> dayn;
 	char buff;
 	int c;
-	for (int i = 8; i < (msize * 5+4); i = i + 5) {
+	for (int i = 8; i < (msize * 5 + 4); i = i + 5) {
 		filecod.seekg(i, ios::beg);
 		filecod.read((char*)&buff, sizeof(char));
 		filecod.seekg(i + 1, ios::beg);
@@ -35,7 +38,6 @@ void decode() {
 		ls1[i->first].left = rayn;
 		rayn = ls1[i->first].left + ls1[i->first].count;
 		ls1[i->first].right = rayn;
-		cout << i->first << " " << ls1[i->first].left << "--00--" << ls1[i->first].right << endl;
 	}
 	int kar;
 	list <int> dayn2;
@@ -43,11 +45,11 @@ void decode() {
 	while (!filecod.eof())
 	{
 		filecod.read((char*)&kar, sizeof(int));
-		for (int i = 0; i < 8;i++) {
+		for (int i = 0; i < 8; i++) {
 			dayn2.push_front(kar % 2);
 			kar = kar / 2;
 		}
-		while (!dayn2.empty()) {dayn.push_back(dayn2.front());dayn2.pop_front();}
+		while (!dayn2.empty()) { dayn.push_back(dayn2.front()); dayn2.pop_front(); }
 	}
 	double test = 0;
 	int x = 15;
