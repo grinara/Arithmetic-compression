@@ -1,10 +1,11 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 #include <map>
 #include <list>
 #include <fstream>
 #include <string>
 #include "Header.h"
+
 using namespace std;
 void decode() {
 	string file_name_to_decode;
@@ -69,7 +70,7 @@ void decode() {
 		for (; (ls1[j].right <= freq); j++);
 		double l1 = l;
 		l = l + ls1[j].left * ((h - l + 1) / del);
-		h = l1 + ls1[j].right * ((h - l1 + 1) / del - 1);
+		h = l1 + (ls1[j].right * ((h - l1 + 1) / del)) - 1;
 		while (true) {
 			if (h < Half);
 			else if (l >= Half) {
