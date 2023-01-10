@@ -11,10 +11,10 @@ int bits = 0;
 list<int> dayn;
 void BitsPlusFollow(int bit) {
 	dayn.push_back(bit);
-	cout << bit;
+	//cout << bit;
 	for (; bits > 0; bits--)
 	{
-		cout << !bit;
+		//cout << !bit;
 		dayn.push_back(!bit);
 	}
 
@@ -35,7 +35,7 @@ void code() {
 	int filesize = file1.tellg();
 	file1.clear();
 	file1.seekg(0);
-	while (!file1.eof()) { 
+	while (!file1.eof()) {
 		char c = file1.get();
 		if (c != -1) { m[c]++; }
 	}
@@ -49,19 +49,19 @@ void code() {
 		ls1[i->first].left = rayn;
 		rayn = ls1[i->first].left + ls1[i->first].count;
 		ls1[i->first].right = rayn;
+		
 	}
-
-	double l = 0, h = pow(2, 16) - 1, del = filesize;
-	double First = (h + 1) / 4, Half = First * 2, Third = First * 3;
+	int l = 0, h = pow(2, 16) - 1, del = filesize;
+	int First = (h + 1) / 4, Half = First * 2, Third = First * 3;
 	file1.clear();
 	file1.seekg(0);
 	while (!file1.eof()) {
 		char c = file1.get();
 		if (c == -1) {}
 		else {
-			double l1 = l;
-			l = l + ls1[c].left * ((h - l1 + 1) / del);
-			h = l1 + (ls1[c].right * ((h - l1 + 1) / del)) - 1;
+            int r1 = (h - l + 1) ;
+			h = l - 1 + ls1[c].right * r1 / del;
+			l = l + ls1[c].left * r1 / del;
 			while (true) {
 				if (h < Half) {
 					BitsPlusFollow(0);
