@@ -32,7 +32,7 @@ void decode() {
 	}
 	num ls1[255];
 	map<char, int>::iterator i;
-	float rayn = 0;
+	int rayn = 0;
 	for (i = m.begin(); i != m.end(); ++i) {
 		ls1[i->first].c = i->first;
 		ls1[i->first].count = i->second;
@@ -67,14 +67,12 @@ void decode() {
 	for (int i = 0; i < filesize; i++) {
 		int r1 = h - l + 1;
 		int r2 = (value - l);
-		freq = ((r2+1) * del - 1) / r1;
+		freq = ((r2 + 1) * del - 1) / r1;
 		int j = 0;
-		for (; (ls1[j].right <= freq) && j<255; j++);
+		for (; (ls1[j].right <= freq) && j < 255; j++);
 		h = l + ls1[j].right * r1 / del - 1;
 		l = l + ls1[j].left * r1 / del;
-		double l1 = l;
-		l = l + ls1[j].left * ((h - l + 1) / del);
-		h = l1 + ls1[j].right * ((h - l1 + 1) / del - 1);
+		
 		while (true) {
 			if (h < Half);
 			else if (l >= Half) {
@@ -86,7 +84,7 @@ void decode() {
 			else break;
 			l += l; h += h + 1;
 			if (!dayn.empty()) {
-				value = value*2 + dayn.front();
+				value = value * 2 + dayn.front();
 				dayn.pop_front();
 			}
 			else value += value;
