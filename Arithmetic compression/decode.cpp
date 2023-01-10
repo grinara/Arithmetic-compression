@@ -17,28 +17,30 @@ void decode() {
 	else { cout << "Файл не открыт" << endl; return; }
 	int filesize;
 	int msize;
-	map<char, int> m;
+	himan m[255];
 	filecod.read((char*)&filesize, sizeof(int));
 	filecod.read((char*)&msize, sizeof(int));
 	list<int> dayn;
-	char buff;
+	char blu;
 	int c;
-	for (int i = 8; i < (msize * 5 + 4); i = i + 5) {
+	for (int i = 8,j=0; i < (msize * 5 + 4); i = i + 5,j++) {
 		filecod.seekg(i, ios::beg);
-		filecod.read((char*)&buff, sizeof(char));
+		filecod.read((char*)&blu, sizeof(char));
 		filecod.seekg(i + 1, ios::beg);
 		filecod.read((char*)&c, sizeof(int));
-		m[buff] = c;
+		m[j].count = c;
+		m[j].c = blu;
 	}
 	num ls1[255];
-	map<char, int>::iterator i;
 	int rayn = 0;
-	for (i = m.begin(); i != m.end(); ++i) {
-		ls1[i->first].c = i->first;
-		ls1[i->first].count = i->second;
-		ls1[i->first].left = rayn;
-		rayn = ls1[i->first].left + ls1[i->first].count;
-		ls1[i->first].right = rayn;
+	for (int i = 0; i < 255; i++) {
+		if (m[i].count > 0) {
+			ls1[i].c = m[i].c;
+			ls1[i].count = m[i].count;
+			ls1[i].left = rayn;
+			rayn = ls1[i].left + ls1[i].count;
+			ls1[i].right = rayn;
+		}
 	}
 	int kar;
 	list <int> dayn2;
