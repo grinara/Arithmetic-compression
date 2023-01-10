@@ -48,9 +48,22 @@ void code() {
 	}
 	int msize=0;
 	for (int i = 0; i < 255; i++) { if (m[i].count > 0) { msize++; } }
+	int step = 255 / 2;       // в группе выбранных элементов проводим сортировку
+	while (step > 0) {       // прямой вставкой
+		for (int i = step; i < 255; i++) {
+			int j = i;
+			himan x = m[j];
+			while ((j >= step) && (x.count < m[j - step].count)) { //вместо обменов сделай сдвиги
+				m[j] = m[j - step];
+				j = j - step;
+			}
+			m[j] = x;
+		}
+		step = step / 2;     // уменьшаем шаг, повторям пока шаг больше нуля
+	}
 	num ls1[255];
 	int rayn = 0;
-	for (int i=0; i<msize; i++) {
+	for (int i=0; i<255; i++) {
 		if (m[i].count > 0) {
 			ls1[i].c = m[i].c;
 			ls1[i].count = m[i].count;
@@ -102,11 +115,13 @@ void code() {
 	}
 	filecode.write((char*)&filesize, sizeof(int)); //длина файла
 	filecode.write((char*)&msize, sizeof(int));//количество уникальных элементов
-	for (int i=0; i < msize; i++) {
-		int k = m[i].count;
-		char kar = m[i].c;
-		filecode.write((char*)&kar, sizeof(char)); //заносим символ
-		filecode.write((char*)&k, sizeof(int));//сколько символ раз входит
+	for (int i=0; i < 255; i++) {
+		if (m[i].count > 0) {
+			int k = m[i].count;
+			char kar = m[i].c;
+			filecode.write((char*)&kar, sizeof(char)); //заносим символ
+			filecode.write((char*)&k, sizeof(int));//сколько символ раз входит
+		}
 	}
 	int count = 7;
 	int number = 0;
