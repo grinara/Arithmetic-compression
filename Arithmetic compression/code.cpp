@@ -49,7 +49,7 @@ void code() {
 		ls1[i->first].left = rayn;
 		rayn = ls1[i->first].left + ls1[i->first].count;
 		ls1[i->first].right = rayn;
-		
+
 	}
 	int l = 0, h = pow(2, 16) - 1, del = filesize;
 	int First = (h + 1) / 4, Half = First * 2, Third = First * 3;
@@ -59,7 +59,7 @@ void code() {
 		char c = file1.get();
 		if (c == -1) {}
 		else {
-            int r1 = (h - l + 1) ;
+			int r1 = (h - l + 1);
 			h = l - 1 + ls1[c].right * r1 / del;
 			l = l + ls1[c].left * r1 / del;
 			while (true) {
