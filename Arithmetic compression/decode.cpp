@@ -52,25 +52,29 @@ void decode() {
 		}
 		while (!dayn2.empty()) { dayn.push_back(dayn2.front()); dayn2.pop_front(); }
 	}
-	double test = 0;
+	int test = 0;
 	int x = 15;
 	while (x >= 0 && !dayn.empty()) {
 		test = test + (dayn.front() * pow(2, x));
 		dayn.pop_front();
 		x--;
 	}
-	double l = 0, h = pow(2, 16) - 1;
-	double First = (h + 1) / 4, Half = First * 2, Third = First * 3;
-	long double freq = 0;
-	double del = filesize;
-	double value = test;
+	int l = 0, h = pow(2, 16) - 1;
+	int First = (h + 1) / 4, Half = First * 2, Third = First * 3;
+	int freq = 0;
+	int del = filesize;
+	int value = test;
 	for (int i = 0; i < filesize; i++) {
-		freq = ((value - l + 1) * del - 1) / (h - l + 1);
+		int r1 = h - l + 1;
+		int r2 = (value - l);
+		freq = ((r2+1) * del - 1) / r1;
 		int j = 0;
-		for (; (ls1[j].right <= freq); j++);
+		for (; (ls1[j].right <= freq) && j<255; j++);
+		h = l + ls1[j].right * r1 / del - 1;
+		l = l + ls1[j].left * r1 / del;
 		double l1 = l;
 		l = l + ls1[j].left * ((h - l + 1) / del);
-		h = l1 + (ls1[j].right * ((h - l1 + 1) / del)) - 1;
+		h = l1 + ls1[j].right * ((h - l1 + 1) / del - 1);
 		while (true) {
 			if (h < Half);
 			else if (l >= Half) {
@@ -82,8 +86,7 @@ void decode() {
 			else break;
 			l += l; h += h + 1;
 			if (!dayn.empty()) {
-				value = value * 2;
-				value = value + dayn.front();
+				value = value*2 + dayn.front();
 				dayn.pop_front();
 			}
 			else value += value;
