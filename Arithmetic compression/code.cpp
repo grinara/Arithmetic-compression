@@ -11,10 +11,8 @@ int bits = 0;
 list<int> dayn;
 void BitsPlusFollow(int bit) {
 	dayn.push_back(bit);
-	//cout << bit;
 	for (; bits > 0; bits--)
 	{
-		//cout << !bit;
 		dayn.push_back(!bit);
 	}
 
@@ -29,39 +27,49 @@ void code() {
 	if (file1) { cout << "Файл успешно открыт" << endl; }
 	else { cout << "Файл не открыт" << endl; return; }
 	ofstream filecode("112.txt", ios::out | ios::binary);
-	map <char, int> m;
+	himan m[255];
 	file1.seekg(0, ios_base::end);
-	//Получаем текущую позицию
 	int filesize = file1.tellg();
 	file1.clear();
 	file1.seekg(0);
 	while (!file1.eof()) {
-		char c = file1.get();
-		if (c != -1) { m[c]++; }
+		char  c0 = file1.get();
+		for (int i = 0; i < 255; i++) {
+			if (m[i].c == 0) {
+				m[i].c = c0;
+				m[i].count++;
+				break;
+			}
+			if (m[i].c == c0) {
+				m[i].count++;
+				break;
+			}
+		}
 	}
-	int msize = m.size();
+	int msize=0;
+	for (int i = 0; i < 255; i++) { if (m[i].count > 0) { msize++; } }
 	num ls1[255];
-	map<char, int>::iterator i;
-	float rayn = 0;
-	for (i = m.begin(); i != m.end(); ++i) {
-		ls1[i->first].c = i->first;
-		ls1[i->first].count = i->second;
-		ls1[i->first].left = rayn;
-		rayn = ls1[i->first].left + ls1[i->first].count;
-		ls1[i->first].right = rayn;
-
+	int rayn = 0;
+	for (int i=0; i<msize; i++) {
+		if (m[i].count > 0) {
+			ls1[i].c = m[i].c;
+			ls1[i].count = m[i].count;
+			ls1[i].left = rayn;
+			rayn = ls1[i].left + ls1[i].count;
+			ls1[i].right = rayn;
+		}
 	}
 	int l = 0, h = pow(2, 16) - 1, del = filesize;
 	int First = (h + 1) / 4, Half = First * 2, Third = First * 3;
 	file1.clear();
 	file1.seekg(0);
 	while (!file1.eof()) {
-		char c = file1.get();
-		if (c == -1) {}
-		else {
+		char c0 = file1.get();
+		int j = 0;
+		for (; m[j].c != c0 && j<255; j++);
 			int r1 = (h - l + 1);
-			h = l - 1 + ls1[c].right * r1 / del;
-			l = l + ls1[c].left * r1 / del;
+			h = l - 1 + ls1[j].right * r1 / del;
+			l = l + ls1[j].left * r1 / del;
 			while (true) {
 				if (h < Half) {
 					BitsPlusFollow(0);
@@ -79,8 +87,6 @@ void code() {
 				l += l;
 				h += h + 1;
 			}
-		}
-
 	}
 	file1.clear();
 	file1.seekg(0);
@@ -96,9 +102,9 @@ void code() {
 	}
 	filecode.write((char*)&filesize, sizeof(int)); //длина файла
 	filecode.write((char*)&msize, sizeof(int));//количество уникальных элементов
-	for (i = m.begin(); i != m.end(); ++i) {
-		int k = i->second;
-		char kar = i->first;
+	for (int i=0; i < msize; i++) {
+		int k = m[i].count;
+		char kar = m[i].c;
 		filecode.write((char*)&kar, sizeof(char)); //заносим символ
 		filecode.write((char*)&k, sizeof(int));//сколько символ раз входит
 	}
