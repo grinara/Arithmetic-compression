@@ -9,9 +9,9 @@
 using namespace std;
 int bits = 0;
 list<int> dayn;
-void BitsPlusFollow(int bit) {
-	dayn.push_back(bit);
-	for (; bits > 0; bits--)
+void BitsPlusFollow(int bit) {// заносим биты
+	dayn.push_back(bit); 
+	for (; bits > 0; bits--) 
 	{
 		dayn.push_back(!bit);
 	}
@@ -29,10 +29,10 @@ void code() {
 	ofstream filecode("112.txt", ios::out | ios::binary);
 	himan m[255];
 	file1.seekg(0, ios_base::end);
-	int filesize = file1.tellg();
+	int filesize = file1.tellg(); //кол-во символов в файле
 	file1.clear();
 	file1.seekg(0);
-	while (!file1.eof()) {
+	while (!file1.eof()) { //ищем уникальные символы и их количество
 		char  c0 = file1.get();
 		for (int i = 0; i < 255; i++) {
 			if (m[i].c == 0) {
@@ -63,7 +63,7 @@ void code() {
 	}
 	num ls1[255];
 	int rayn = 0;
-	for (int i=0; i<255; i++) {
+	for (int i=0; i<255; i++) { //список элементов с их границами
 		if (m[i].count > 0) {
 			ls1[i].c = m[i].c;
 			ls1[i].count = m[i].count;
@@ -76,24 +76,24 @@ void code() {
 	int First = (h + 1) / 4, Half = First * 2, Third = First * 3;
 	file1.clear();
 	file1.seekg(0);
-	while (!file1.eof()) {
+	while (!file1.eof()) { 
 		char c0 = file1.get();
 		int j = 0;
-		for (; m[j].c != c0 && j<255; j++);
+		for (; m[j].c != c0 && j<255; j++);//считаем границы
 			int r1 = (h - l + 1);
 			h = l - 1 + ls1[j].right * r1 / del;
 			l = l + ls1[j].left * r1 / del;
 			while (true) {
-				if (h < Half) {
+				if (h < Half) { //если весь интервал слева
 					BitsPlusFollow(0);
 				}
-				else if (l >= Half) {
+				else if (l >= Half) { //если весь интервал справа
 					BitsPlusFollow(1);
 					l -= Half; h -= Half;
 
 				}
-				else if (l >= First && h < Third) {
-					bits++;
+				else if (l >= First && h < Third) { //если по разные стороны
+					bits++;//накапливаем биты
 					l -= First; h -= First;
 				}
 				else break;
@@ -125,7 +125,7 @@ void code() {
 	}
 	int count = 7;
 	int number = 0;
-	while (!dayn.empty()) {
+	while (!dayn.empty()) { //заносим в файл биты
 		number = number + (dayn.front() * pow(2, count));
 		dayn.pop_front();
 		if (count == 0) { filecode.write((char*)&number, sizeof(int)); count = 8; number = 0; }
