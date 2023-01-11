@@ -18,12 +18,12 @@ void decode() {
 	int filesize;
 	int msize;
 	himan m[255];
-	filecod.read((char*)&filesize, sizeof(int));
-	filecod.read((char*)&msize, sizeof(int));
+	filecod.read((char*)&filesize, sizeof(int)); //кол-во символов в тексте
+	filecod.read((char*)&msize, sizeof(int)); ////кол-во уникальных символов в тексте
 	list<int> dayn;
 	char blu;
 	int c;
-	for (int i = 8,j=0; i < (msize * 5 + 4); i = i + 5,j++) {
+	for (int i = 8,j=0; i < (msize * 5 + 4); i = i + 5,j++) {//достаём из файла символы + их кол-во
 		filecod.seekg(i, ios::beg);
 		filecod.read((char*)&blu, sizeof(char));
 		filecod.seekg(i + 1, ios::beg);
@@ -33,7 +33,7 @@ void decode() {
 	}
 	num ls1[255];
 	int rayn = 0;
-	for (int i = 0; i < 255; i++) {
+	for (int i = 0; i < 255; i++) {//считаем границы
 		if (m[i].count > 0) {
 			ls1[i].c = m[i].c;
 			ls1[i].count = m[i].count;
@@ -45,7 +45,7 @@ void decode() {
 	int kar;
 	list <int> dayn2;
 	dayn2.clear();
-	while (!filecod.eof())
+	while (!filecod.eof()) //достаём биты
 	{
 		filecod.read((char*)&kar, sizeof(int));
 		for (int i = 0; i < 8; i++) {
@@ -56,7 +56,7 @@ void decode() {
 	}
 	int test = 0;
 	int x = 15;
-	while (x >= 0 && !dayn.empty()) {
+	while (x >= 0 && !dayn.empty()) {//формируем первое число из 16 бит
 		test = test + (dayn.front() * pow(2, x));
 		dayn.pop_front();
 		x--;
@@ -69,24 +69,24 @@ void decode() {
 	for (int i = 0; i < filesize; i++) {
 		int r1 = h - l + 1;
 		int r2 = (value - l);
-		freq = ((r2 + 1) * del - 1) / r1;
+		freq = ((r2 + 1) * del - 1) / r1;//какой символ входит в границы 
 		int j = 0;
 		for (; (ls1[j].right <= freq) && j < 255; j++);
-		h = l + ls1[j].right * r1 / del - 1;
+		h = l + ls1[j].right * r1 / del - 1;//пересчитываем границы
 		l = l + ls1[j].left * r1 / del;
 		
 		while (true) {
-			if (h < Half);
-			else if (l >= Half) {
+			if (h < Half);//если весь интервал слева
+			else if (l >= Half) { //если весь интервал справа
 				l -= Half; h -= Half; value -= Half;
 			}
-			else if ((l >= First) && (h < Third)) {
+			else if ((l >= First) && (h < Third)) {//если по разные стороны
 				l -= First; h -= First; value -= First;
 			}
 			else break;
 			l += l; h += h + 1;
-			if (!dayn.empty()) {
-				value = value * 2 + dayn.front();
+			if (!dayn.empty()) { //убираем старший бит и добавляем младший из списка
+				value = value * 2 + dayn.front();//сдвигаем влево и добавляем бит
 				dayn.pop_front();
 			}
 			else value += value;
